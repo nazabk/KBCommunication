@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KBCommunication</name>
+    </assembly>
+    <members>
+        <member name="T:KBCommunication.Communication`2">
+            <inheritdoc cref="T:KBCommunication.Interfaces.ICommunication`2"/>
+        </member>
+        <member name="F:KBCommunication.Communication`2.ReceivingSemaphore">
+            <summary>
+            Receiving semaphore.
+            </summary>
+        </member>
+        <member name="M:KBCommunication.Communication`2.#ctor(KBCommunication.Interfaces.IFrameFactory{`0,`1},KBCommunication.Interfaces.IConnection{`1})">
+            <summary>
+            Creates communication handler.
+            </summary>
+            <param name="frameFactory">Frame factory.</param>
+            <param name="connection">Current connection.</param>
+        </member>
+        <member name="E:KBCommunication.Communication`2.Received">
+            <inheritdoc/>
+        </member>
+        <member name="P:KBCommunication.Communication`2.FrameFactory">
+            <inheritdoc/>
+        </member>
+        <member name="P:KBCommunication.Communication`2.Connection">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCommunication.Communication`2.Send(`0,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCommunication.Communication`2.Receive(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCommunication.Communication`2.Ask(`0,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCommunication.Communication`2.FrameFactory_FrameValidated(System.Object,`0)">
+            <summary>
+            Handles frame validation.
+            </summary>
+            <param name="sender">Source of frame.</param>
+            <param name="frame">Frame.</param>
+        </member>
+        <member name="M:KBCommunication.Communication`2.Connection_Received(System.Object,`1)">
+            <summary>
+            Handles new data received.
+            </summary>
+            <param name="sender">Source of data.</param>
+            <param name="data">New data.</param>
+        </member>
+        <member name="M:KBCommunication.Communication`2.Dispose">
+            <summary>
+            Disponses class.
+            </summary>
+        </member>
+        <member name="M:KBCommunication.Communication`2.Dispose(System.Boolean)">
+            <summary>
+            Disposes class.
+            </summary>
+            <param name="disposing">Flag if managed resources should by disposed.</param>
+        </member>
+        <member name="T:KBCommunication.FrameValidator`1">
+            <inheritdoc cref="T:KBCommunication.Interfaces.IFrameValidator`1"/>
+        </member>
+        <member name="M:KBCommunication.FrameValidator`1.#ctor(System.Func{`0,System.Boolean})">
+            <summary>
+            Creates frame validator.
+            </summary>
+            <param name="validateFunc">Validating function.</param>
+        </member>
+        <member name="E:KBCommunication.FrameValidator`1.FrameValidated">
+            <inheritdoc/>
+        </member>
+        <member name="E:KBCommunication.FrameValidator`1.ValidationFailed">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCommunication.FrameValidator`1.RegisterData(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCommunication.FrameValidator`1.FromFrame(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCommunication.FrameValidator`1.Validate(`0)">
+            <inheritdoc/>
+        </member>
+        <member name="T:KBCommunication.Interfaces.ICommunication`2">
+            <summary>
+            Communication handler witch conversion between <typeparamref name="T"/> and <typeparamref name="F"/> types.
+            </summary>
+            <typeparam name="F">Type of frames.</typeparam>
+            <typeparam name="T">Data type for communication purposes.</typeparam>
+        </member>
+        <member name="P:KBCommunication.Interfaces.ICommunication`2.FrameFactory">
+            <summary>
+            Frame factory.
+            </summary>
+        </member>
+        <member name="P:KBCommunication.Interfaces.ICommunication`2.Connection">
+            <summary>
+            Current connection.
+            </summary>
+        </member>
+        <member name="M:KBCommunication.Interfaces.ICommunication`2.Receive(System.Threading.CancellationToken)">
+            <summary>
+            Receives frame.
+            </summary>
+            <param name="cancelToken">Cancellation token.</param>
+            <returns>Awaitable. <typeparamref name="F"/> frame.</returns>
+            <exception cref="T:System.OperationCanceledException">On <paramref name="cancelToken"/>
+            cancellation requested.</exception>
+        </member>
+        <member name="M:KBCommunication.Interfaces.ICommunication`2.Ask(`0,System.Threading.CancellationToken)">
+            <summary>
+            Sends question and waits for response.
+            </summary>
+            <param name="frame">Question to send.</param>
+            <param name="cancelToken">Cancellation token.</param>
+            <returns>Awaitable. <typeparamref name="F"/> response.</returns>
+            <exception cref="T:System.OperationCanceledException">On <paramref name="cancelToken"/>
+            cancellation requested.</exception>
+        </member>
+        <member name="T:KBCommunication.Interfaces.IConnection`1">
+            <summary>
+            Connection interface.
+            </summary>
+            <typeparam name="T">Data type for communication purposes.</typeparam>
+        </member>
+        <member name="E:KBCommunication.Interfaces.IConnection`1.Received">
+            <summary>
+            Data has been received.
+            </summary>
+        </member>
+        <member name="M:KBCommunication.Interfaces.IConnection`1.Send(`0,System.Threading.CancellationToken)">
+            <summary>
+            Sends data.
+            </summary>
+            <param name="data">Data to send.</param>
+            <param name="cancelToken">Canncellation token.</param>
+            <returns>Awaitable. Sending task.</returns>
+            <exception cref="T:System.OperationCanceledException">On <paramref name="cancelToken"/>
+            cancellation requested.</exception>
+        </member>
+        <member name="T:KBCommunication.Interfaces.IFrameFactory`2">
+            <summary>
+            Looks up for frames in received data and validates them.
+            </summary>
+            <typeparam name="F">Type of frames.</typeparam>
+            <typeparam name="T">Type of received data.</typeparam>
+        </member>
+        <member name="E:KBCommunication.Interfaces.IFrameFactory`2.FrameValidated">
+            <summary>
+            On new frame detection.
+            </summary>
+        </member>
+        <member name="E:KBCommunication.Interfaces.IFrameFactory`2.ValidationFailed">
+            <summary>
+            On data skipping.
+            </summary>
+        </member>
+        <member name="M:KBCommunication.Interfaces.IFrameFactory`2.RegisterData(`1)">
+            <summary>
+            Registers new data for purposes of frame validation.
+            </summary>
+            <param name="data">Derived data.</param>        
+        </member>
+        <member name="M:KBCommunication.Interfaces.IFrameFactory`2.FromFrame(`0)">
+            <summary>
+            Creates <typeparamref name="T"/> reprezentation of frame <typeparamref name="F"/>.
+            </summary>
+            <param name="frame">Frame.</param>
+            <returns><typeparamref name="T"/> data.</returns>
+        </member>
+        <member name="T:KBCommunication.Interfaces.IFrameValidator`1">
+            <inheritdoc/>
+            <typeparam name="F">Type of frames.</typeparam>
+        </member>
+        <member name="M:KBCommunication.Interfaces.IFrameValidator`1.Validate(`0)">
+            <summary>
+            Validates frame.
+            </summary>
+            <param name="frame">Frame to validate.</param>
+            <returns><c>true</c> if frame is valid, <c>false</c> otherwise.</returns>
+        </member>
+    </members>
+</doc>
