@@ -4,9 +4,9 @@ using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KBStreamingNet
+namespace KBStreaming
 {
-    public class KBSerialConnection : IConnection<byte[]>
+    public class KBSerialConnection : IConnection<byte[]>, IDisposable
     {
         private readonly SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
         private readonly SerialPort serialPort;
@@ -18,6 +18,7 @@ namespace KBStreamingNet
             serialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
             serialPort.DataReceived += SerialPort_DataReceived;
             serialPort.ErrorReceived += SerialPort_ErrorReceived;
+            Active = true;
         }
 
         public event EventHandler<byte[]> Received;

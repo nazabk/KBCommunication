@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KBCommunicationRouted", "KB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KBCommunicationTest", "KBCommunicationTest\KBCommunicationTest.csproj", "{59534718-446C-43FA-9236-D9C38FFAFBDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KBStreamingNet", "KBStreamingNet\KBStreamingNet.csproj", "{61B050C9-A90E-4873-90B8-DF2289DFC290}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KBStreamingStandard", "KBStreamingStandard\KBStreamingStandard.csproj", "{2DCC5442-F21C-41F9-97C2-9951981C935D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{59534718-446C-43FA-9236-D9C38FFAFBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59534718-446C-43FA-9236-D9C38FFAFBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59534718-446C-43FA-9236-D9C38FFAFBDE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61B050C9-A90E-4873-90B8-DF2289DFC290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61B050C9-A90E-4873-90B8-DF2289DFC290}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61B050C9-A90E-4873-90B8-DF2289DFC290}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61B050C9-A90E-4873-90B8-DF2289DFC290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DCC5442-F21C-41F9-97C2-9951981C935D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DCC5442-F21C-41F9-97C2-9951981C935D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DCC5442-F21C-41F9-97C2-9951981C935D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DCC5442-F21C-41F9-97C2-9951981C935D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

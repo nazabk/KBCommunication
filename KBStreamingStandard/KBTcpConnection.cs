@@ -8,9 +8,9 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KBStreamingNet
+namespace KBStreaming
 {
-    public class KBTcpConnection : IConnection<byte[]>
+    public class KBTcpConnection : IConnection<byte[]>, IDisposable
     {
         private readonly IPAddress address;
         private readonly int port;
@@ -25,6 +25,7 @@ namespace KBStreamingNet
             this.address = address;
             this.port = port;
             buffer = new byte[BufferSize];
+            Active = true;
         }
 
         public event EventHandler<byte[]> Received;
@@ -71,7 +72,10 @@ namespace KBStreamingNet
                         return false;
                     }
                 }
-                catch
+                catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is SocketException ||
+                ex is ObjectDisposedException)
                 {
                     return false;
                 }
