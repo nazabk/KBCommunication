@@ -23,12 +23,12 @@ namespace KBCommunication.Routed
 
         #region IDisposable
 
-        private bool _disposed = false;
+        private bool disposed = false;
 
         /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (disposed)
             {
                 return;
             }
@@ -38,7 +38,7 @@ namespace KBCommunication.Routed
                 router.RemoveValidator(validator);
             }
 
-            _disposed = true;
+            disposed = true;
 
             base.Dispose(disposing);
         }

@@ -11,37 +11,17 @@ namespace KBStreaming
         private readonly SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
         private readonly SerialPort serialPort;
 
-        private bool active;
-
         public KBSerialConnection(string portName, int baudRate = 115200, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.One)
         {
             serialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
             serialPort.DataReceived += SerialPort_DataReceived;
             serialPort.ErrorReceived += SerialPort_ErrorReceived;
-            Active = true;
+            serialPort.Open();
         }
 
         public event EventHandler<byte[]> Received;
 
         public static int ReconnectionDelay { get; set; } = 500;
-
-        public bool Active
-        {
-            get => serialPort.IsOpen;
-            set
-            {
-                if (active == value) return;
-                active = value;
-                if (value)
-                {
-                    serialPort.Open();
-                }
-                else
-                {
-                    serialPort.Close();
-                }
-            }
-        }
 
         public async Task Send(byte[] data, CancellationToken cancelToken)
         {
@@ -67,7 +47,7 @@ namespace KBStreaming
             {
                 port.Close();
                 Thread.Sleep(ReconnectionDelay);
-                if (active)
+                if (!disposed)
                 {
                     port.Open();
                 }
@@ -98,7 +78,7 @@ namespace KBStreaming
         #region IDispose
 
         // To detect redundant calls
-        private bool _disposed = false;
+        private bool disposed = false;
 
         /// <summary>
         /// Disponses class.
@@ -114,17 +94,17 @@ namespace KBStreaming
         /// <param name="disposing">Flag if managed resources should by disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                Active = false;
+                serialPort.Close();
             }
 
-            _disposed = true;
+            disposed = true;
         }
 
         #endregion IDispose

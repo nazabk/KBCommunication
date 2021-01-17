@@ -138,7 +138,7 @@ namespace KBCommunication
         #region IDispose
 
         // To detect redundant calls
-        private bool _disposed = false;
+        private bool disposed = false;
 
         /// <summary>
         /// Disponses class.
@@ -154,7 +154,7 @@ namespace KBCommunication
         /// <param name="disposing">Flag if managed resources should by disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (disposed)
             {
                 return;
             }
@@ -167,7 +167,7 @@ namespace KBCommunication
                 semaphore.Dispose();
             }
 
-            _disposed = true;
+            disposed = true;
         }
 
         #endregion IDispose

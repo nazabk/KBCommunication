@@ -1,6 +1,5 @@
 ﻿using KBCommunication.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -18,14 +17,13 @@ namespace KBStreaming
         private readonly SemaphoreSlim sendSemaphore = new SemaphoreSlim(1, 1);
 
         private TcpClient tcpClient;
-        private bool active;
 
         public KBTcpConnection(IPAddress address, int port)
         {
             this.address = address;
             this.port = port;
             buffer = new byte[BufferSize];
-            Active = true;
+            Connect();
         }
 
         public event EventHandler<byte[]> Received;
@@ -82,24 +80,6 @@ namespace KBStreaming
             }
         }
 
-        public bool Active
-        {
-            get => active;
-            set
-            {
-                if (active == value) return;
-                active = value;
-                if (active)
-                {
-                    Connect();
-                }
-                else
-                {
-                    tcpClient?.Close();
-                }
-            }
-        }
-
         public async Task Send(byte[] data, CancellationToken cancelToken)
         {
             await sendSemaphore.WaitAsync(cancelToken);
@@ -120,7 +100,7 @@ namespace KBStreaming
 
         private void Connect()
         {
-            while (active)
+            while (!disposed)
             {
                 try
                 {
@@ -152,7 +132,7 @@ namespace KBStreaming
 
         private void ReadMessage(TcpClient client)
         {
-            if (!active) return;
+            if (disposed) return;
             try
             {
                 client.GetStream().BeginRead(buffer, 0, buffer.Length, OnReadMessge, client);
@@ -190,7 +170,10 @@ namespace KBStreaming
         {
             client?.Close();
             await Task.Delay(ReconnectionDelay);
-            Connect();
+            if (!disposed)
+            {
+                Connect();
+            }
         }
 
         #endregion communication
@@ -198,7 +181,7 @@ namespace KBStreaming
         #region IDispose
 
         // To detect redundant calls
-        private bool _disposed = false;
+        private bool disposed = false;
 
         /// <summary>
         /// Disponses class.
@@ -214,17 +197,17 @@ namespace KBStreaming
         /// <param name="disposing">Flag if managed resources should by disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                Active = false;
+                tcpClient?.Close();
             }
 
-            _disposed = true;
+            disposed = true;
         }
 
         #endregion IDispose
