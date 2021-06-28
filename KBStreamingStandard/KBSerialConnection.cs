@@ -21,7 +21,7 @@ namespace KBStreaming
 
         public event EventHandler<byte[]> Received;
 
-        public static int ReconnectionDelay { get; set; } = 500;
+        public int ReconnectionDelay { get; set; } = 500;
 
         public async Task Send(byte[] data, CancellationToken cancelToken)
         {
