@@ -13,7 +13,10 @@ namespace KBCommunication
         /// </summary>
         protected readonly SemaphoreSlim ReceivingSemaphore = new SemaphoreSlim(1, 1);
 
-        private readonly SemaphoreSlim semaphore = new SemaphoreSlim(0, 1);
+        /// <summary>
+        /// Asking semaphore.
+        /// </summary>
+        protected readonly SemaphoreSlim Semaphore = new SemaphoreSlim(0, 1);
 
         /// <summary>
         /// Creates communication handler.
@@ -54,7 +57,7 @@ namespace KBCommunication
                 {
                     waitingForResponse = false;
                     result = frame;
-                    semaphore.Release();
+                    Semaphore.Release();
                 }
             }
 
@@ -62,14 +65,14 @@ namespace KBCommunication
             try
             {
                 Received += OnReceived;
-                await semaphore.WaitAsync(cancelToken);
+                await Semaphore.WaitAsync(cancelToken);
             }
             finally
-            {                
+            {
                 Received -= OnReceived;
-                while (semaphore.CurrentCount > 0)
+                while (Semaphore.CurrentCount > 0)
                 {
-                    semaphore.Wait(); 
+                    Semaphore.Wait();
                 }
                 ReceivingSemaphore.Release();
             }
@@ -90,7 +93,7 @@ namespace KBCommunication
                 {
                     waitingForResponse = false;
                     result = frame;
-                    semaphore.Release();
+                    Semaphore.Release();
                 }
             }
 
@@ -100,14 +103,14 @@ namespace KBCommunication
                 await Send(data, cancelToken);
                 Received += OnReceived;
                 receiving = true;
-                await semaphore.WaitAsync(cancelToken);
+                await Semaphore.WaitAsync(cancelToken);
             }
             finally
             {
                 if (receiving) Received -= OnReceived;
-                while (semaphore.CurrentCount > 0)
+                while (Semaphore.CurrentCount > 0)
                 {
-                    semaphore.Wait();
+                    Semaphore.Wait();
                 }
                 ReceivingSemaphore.Release();
             }
@@ -164,7 +167,7 @@ namespace KBCommunication
                 Connection.Received -= Connection_Received;
                 FrameFactory.FrameValidated -= FrameFactory_FrameValidated;
                 ReceivingSemaphore.Dispose();
-                semaphore.Dispose();
+                Semaphore.Dispose();
             }
 
             disposed = true;
